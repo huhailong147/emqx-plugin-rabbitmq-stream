@@ -1,0 +1,24 @@
+{mapping, "bridge.kafka.host", "emqx_plugin_template.host", [
+  {default, "127.0.0.1"},
+  {datatype, string}
+]}.
+
+{mapping, "bridge.kafka.stream_port", "emqx_plugin_template.stream_port", [
+  {default, 5552},
+  {datatype, integer}
+]}.
+
+{mapping, "bridge.kafka.user", "emqx_plugin_template.user", [
+  {default, "guest"},
+  {datatype, string}
+]}.
+
+{mapping, "bridge.kafka.password", "emqx_plugin_template.password", [
+  {default, "guest"},
+  {datatype, string}
+]}.
+
+{mapping, "bridge.kafka.vhost", "emqx_plugin_template.vhost", [
+  {default, "/"},
+  {datatype, string}
+]}.

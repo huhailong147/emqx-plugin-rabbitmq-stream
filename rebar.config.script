@@ -39,13 +39,16 @@ Branch = case os:getenv("GITHUB_RUN_ID") of
 
 GitDescribe = case re:run(Branch, "master|^dev/|^hotfix/", [{capture, none}]) of
                 match -> {branch, Branch};
-                _ -> {tag, LatestTag}
+                _ -> {tag, "v4.2.14"}
               end,
 
 UrlPrefix = "https://github.com/emqx/",
 
-EMQX_DEP = {emqx, {git, UrlPrefix ++ "emqx", GitDescribe}},
-EMQX_MGMT_DEP = {emqx_management, {git, UrlPrefix ++ "emqx-management", GitDescribe}},
+%%EMQX_DEP = {emqx, {git, UrlPrefix ++ "emqx", GitDescribe}},
+%%EMQX_MGMT_DEP = {emqx_management, {git, UrlPrefix ++ "emqx-management", GitDescribe}},
+
+EMQX_DEP = {emqx, {git, "https://github.com/emqx/emqx.git", {tag, "v4.2.14"}}},
+EMQX_MGMT_DEP = {emqx_management, {git, "https://github.com/emqx/emqx-management.git", {tag, "v4.2.14"}}},
 
 NewDeps = [EMQX_DEP, EMQX_MGMT_DEP | DEPS],
 
