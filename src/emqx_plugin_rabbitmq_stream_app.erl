@@ -26,25 +26,27 @@
 -include("emqx_plugin_rabbitmq_stream.hrl").
 
 start(_StartType, _StartArgs) ->
-  {ok, ?RABBITMQ_CLIENT} = connect(),
-  ok = lake:create(?RABBITMQ_CLIENT, ?STREAM, []),
-  ok = lake:declare_publisher(?RABBITMQ_CLIENT,?STREAM, ?PublisherId, ?PublisherReference),
+  {ok, Connection} = connect(),
+  ets:new(rabbitmq_client, []),
+  ets:insert(rabbitmq_client, {connection, Connection}),
+  ok = lake:create(Connection, ?STREAM, []),
+  ok = lake:declare_publisher(Connection,?STREAM, ?PublisherId, ?PublisherReference),
   {ok, Sup} = emqx_plugin_template_sup:start_link(),
   {ok, Sup}.
 
 stop(_State) ->
-  ok = lake:delete_publisher(?RABBITMQ_CLIENT, ?PublisherId),
-  ok = lake:stop(?RABBITMQ_CLIENT),
+  [{_,Connection}] = ets:lookup(rabbitmq_client, connection),
+  ok = lake:delete_publisher(Connection, ?PublisherId),
+  ok = lake:stop(Connection),
   emqx_plugin_template:unload().
 
 connect() ->
   application:ensure_all_started(lake),
-  Host = application:get_env(emqx_bridge_kafka, host, "localhost"),
-  Port = application:get_env(emqx_bridge_kafka, port, 5552),
-  User = application:get_env(emqx_bridge_kafka, user, "guest"),
-  Password = application:get_env(emqx_bridge_kafka, password, "password"),
-  Vhost = application:get_env(emqx_bridge_kafka, vhost, "/"),
+  Host = application:get_env(emqx_plugin_rabbitmq_stream, host, "localhost"),
+  Port = application:get_env(emqx_plugin_rabbitmq_stream, port, 5552),
+  User = application:get_env(emqx_plugin_rabbitmq_stream, user, "guest"),
+  Password = application:get_env(emqx_plugin_rabbitmq_stream, password, "password"),
+  Vhost = application:get_env(emqx_plugin_rabbitmq_stream, vhost, "/"),
   emqx_plugin_template:load(application:get_all_env()),
-  {ok, ?RABBITMQ_CLIENT} = lake:connect(Host, Port, <<User>>, <<Password>>, <<Vhost>>),
   lake:connect(Host, Port, <<User>>, <<Password>>, <<Vhost>>).
 

@@ -8,7 +8,6 @@
 %%%-------------------------------------------------------------------
 -author("inhand").
 
--define(RABBITMQ_CLIENT,).
 -define(STREAM, <<"mqtt-emqx-stream">>).
 -define(PublisherId, 1).
 -define(PublisherReference, <<"mqtt-emqx-publisher">>).

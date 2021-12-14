@@ -148,7 +148,8 @@ on_message_publish(Message = #message{topic = <<"$SYS/", _/binary>>}, _Env) ->
 
 on_message_publish(Message, _Env) ->
   io:format("Publish ~s~n", [emqx_message:format(Message)]),
-  _ = lake:publish_sync(?RABBITMQ_CLIENT, ?PublisherId, [{1, Message}]),
+  [{_,Connection}] = ets:lookup(rabbitmq_client, connection),
+  _ = lake:publish_sync(Connection, ?PublisherId, [{1, Message}]),
   receive
     {deliver, 1, _} ->
       throw(unexpected)

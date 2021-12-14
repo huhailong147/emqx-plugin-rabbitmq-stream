@@ -1,24 +1,24 @@
-{mapping, "bridge.kafka.host", "emqx_plugin_template.host", [
+{mapping, "bridge.rabbitmq.host", "emqx_plugin_rabbitmq_stream.host", [
   {default, "127.0.0.1"},
   {datatype, string}
 ]}.
 
-{mapping, "bridge.kafka.stream_port", "emqx_plugin_template.stream_port", [
+{mapping, "bridge.rabbitmq.stream_port", "emqx_plugin_rabbitmq_stream.stream_port", [
   {default, 5552},
   {datatype, integer}
 ]}.
 
-{mapping, "bridge.kafka.user", "emqx_plugin_template.user", [
+{mapping, "bridge.rabbitmq.user", "emqx_plugin_rabbitmq_stream.user", [
   {default, "guest"},
   {datatype, string}
 ]}.
 
-{mapping, "bridge.kafka.password", "emqx_plugin_template.password", [
+{mapping, "bridge.rabbitmq.password", "emqx_plugin_rabbitmq_stream.password", [
   {default, "guest"},
   {datatype, string}
 ]}.
 
-{mapping, "bridge.kafka.vhost", "emqx_plugin_template.vhost", [
+{mapping, "bridge.rabbitmq.vhost", "emqx_plugin_rabbitmq_stream.vhost", [
   {default, "/"},
   {datatype, string}
 ]}.
