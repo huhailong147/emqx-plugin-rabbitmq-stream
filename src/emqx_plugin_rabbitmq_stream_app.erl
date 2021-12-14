@@ -27,7 +27,7 @@
 
 start(_StartType, _StartArgs) ->
   {ok, Connection} = connect(),
-  ets:new(rabbitmq_client, []),
+  ets:new(rabbitmq_client, [named_table, protected, set, {keypos, 1}]),
   ets:insert(rabbitmq_client, {connection, Connection}),
   ok = lake:create(Connection, ?STREAM, []),
   ok = lake:declare_publisher(Connection,?STREAM, ?PublisherId, ?PublisherReference),
