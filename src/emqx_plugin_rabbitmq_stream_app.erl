@@ -31,14 +31,15 @@ start(_StartType, _StartArgs) ->
   ets:insert(rabbitmq_client, {connection, Connection}),
   ok = lake:create(Connection, ?STREAM, []),
   ok = lake:declare_publisher(Connection,?STREAM, ?PublisherId, ?PublisherReference),
-  {ok, Sup} = emqx_plugin_template_sup:start_link(),
+  {ok, Sup} = emqx_plugin_rabbitmq_stream_sup:start_link(),
+  emqx_plugin_rabbitmq_stream:load(application:get_all_env()),
   {ok, Sup}.
 
 stop(_State) ->
   [{_,Connection}] = ets:lookup(rabbitmq_client, connection),
   ok = lake:delete_publisher(Connection, ?PublisherId),
   ok = lake:stop(Connection),
-  emqx_plugin_template:unload().
+  emqx_plugin_rabbitmq_stream:unload().
 
 connect() ->
   application:ensure_all_started(lake),
@@ -47,6 +48,5 @@ connect() ->
   User = application:get_env(emqx_plugin_rabbitmq_stream, user, "guest"),
   Password = application:get_env(emqx_plugin_rabbitmq_stream, password, "password"),
   Vhost = application:get_env(emqx_plugin_rabbitmq_stream, vhost, "/"),
-  emqx_plugin_template:load(application:get_all_env()),
   lake:connect(Host, Port, <<User>>, <<Password>>, <<Vhost>>).
 
