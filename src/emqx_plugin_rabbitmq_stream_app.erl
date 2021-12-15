@@ -49,5 +49,5 @@ connect() ->
   Password = application:get_env(emqx_plugin_rabbitmq_stream, password, "guest"),
   Vhost = application:get_env(emqx_plugin_rabbitmq_stream, vhost, "/"),
   emqx_logger:debug("Connection parameter(Host=~s,Port=~w,User=~s,Password=***,Vhost=~s~n", [Host,Port,User,Vhost]),
-  lake:connect("127.0.0.1", 5552, <<"gust">>, <<"guest">>, <<"/">>).
+  lake:connect(Host, Port, <<User>>, <<Password>>, <<Vhost>>).
 
