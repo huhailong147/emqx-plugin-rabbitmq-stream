@@ -147,7 +147,7 @@ on_message_publish(Message = #message{topic = <<"$SYS/", _/binary>>}, _Env) ->
   {ok, Message};
 
 on_message_publish(Message, _Env) ->
-  io:format("Publish ~s~n", [emqx_message:format(Message)]),
+  emqx_logger:debug("Publish ~s~n", [emqx_message:format(Message)]),
   [{_,Connection}] = ets:lookup(rabbitmq_client, connection),
   _ = lake:publish_sync(Connection, ?PublisherId, [{1, Message}]),
   receive
